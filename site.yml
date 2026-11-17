@@ -2,3 +2,5 @@
 # This playbook should import all playbooks that are together meant to define the state
 # of this Ansible site.
 # The imported playbooks must be idempotent as site.yml may be run repeatedly for periodic remediation.
+- name: Instalace cowsay
+  ansible.builtin.import_playbook: playbooks/cowsay.yml

@@ -1,0 +1,13 @@
+- name: Instalace cowsay
+  hosts: oin
+  become: true
+  tasks:
+    - name: Přidání repozitáře EPEL
+      ansible.builtin.dnf:
+        name: epel-release
+        state: present
+
+    - name: Instalace balíčku cowsay
+      ansible.builtin.dnf:
+        name: cowsay
+        state: present
