@@ -1,0 +1,5 @@
+user_name: oin
+
+user_ssh_keys:
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBgrAaH8W6RfX0FaMQZQUR5TBro0M+b7qfMD0FzvCIJ2 vaclav.zadina@a0313.nti.tul.cz"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKoyPABM2rVtmem6aGn+9LhqdLwX+XyA9yiybmfCRwbR oin@DESKTOP-G93TQPF"

@@ -4,3 +4,5 @@
 # The imported playbooks must be idempotent as site.yml may be run repeatedly for periodic remediation.
 - name: Instalace cowsay
   ansible.builtin.import_playbook: playbooks/cowsay.yml
+- name: Správa uživatele
+  ansible.builtin.import_playbook: playbooks/users.yml

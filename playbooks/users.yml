@@ -1,0 +1,16 @@
+- name: Správa uživatele
+  hosts: oin
+  become: true
+  tasks:
+    - name: Definice uživatele
+      ansible.builtin.user:
+        name: "{{ user_name }}"
+        state: present
+        update_password: on_create
+
+    - name: Autorizované SSH klíče
+      ansible.posix.authorized_key:
+        user: "{{ user_name }}"
+        key: "{{ user_ssh_keys | join('\n') }}"
+        exclusive: true
+        state: present
