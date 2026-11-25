@@ -1,0 +1,16 @@
+samba_workgroup: WORKGROUP
+samba_user: sambauser
+
+samba_firewall_zone: home
+samba_allowed_networks:
+  - 147.230.0.0/16
+  - 2001:718:1C01::/48
+
+samba_shares:
+  - name: sdilena
+    path: /srv/samba/sdilena
+    options:
+      comment: Sdilena slozka
+      valid users: sambauser
+      read only: "no"
+      browseable: "yes"

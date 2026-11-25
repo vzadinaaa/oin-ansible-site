@@ -1,0 +1,15 @@
+# Spravovano Ansiblem, rucni zmeny budou prepsany
+
+[global]
+	workgroup = {{ samba_workgroup }}
+	security = user
+	passdb backend = tdbsam
+
+{% for share in samba_shares %}
+[{{ share.name }}]
+	path = {{ share.path }}
+{% for key, value in share.options.items() %}
+	{{ key }} = {{ value }}
+{% endfor %}
+
+{% endfor %}

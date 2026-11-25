@@ -1,0 +1,73 @@
+- name: Samba server
+  hosts: oin
+  become: true
+  tasks:
+    - name: Instalace Samby
+      ansible.builtin.dnf:
+        name:
+          - samba
+          - python3-policycoreutils
+        state: present
+
+    - name: Uživatel jen pro Sambu
+      ansible.builtin.user:
+        name: "{{ samba_user }}"
+        create_home: false
+        shell: /sbin/nologin
+        state: present
+
+    - name: SELinux pravidlo pro sdílené složky
+      community.general.sefcontext:
+        target: "{{ item.path }}(/.*)?"
+        setype: samba_share_t
+        state: present
+      loop: "{{ samba_shares }}"
+
+    - name: Sdílené složky
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        owner: "{{ samba_user }}"
+        group: "{{ samba_user }}"
+        mode: "0770"
+        setype: samba_share_t
+      loop: "{{ samba_shares }}"
+
+    - name: Konfigurace Samby ze šablony
+      ansible.builtin.template:
+        src: smb.conf.j2
+        dest: /etc/samba/smb.conf
+        owner: root
+        group: root
+        mode: "0644"
+        validate: testparm -s %s
+      notify: Restart Samby
+
+    - name: Spuštění Samby
+      ansible.builtin.systemd_service:
+        name: smb
+        state: started
+        enabled: true
+
+    - name: Síť TUL ve firewallu
+      ansible.posix.firewalld:
+        zone: "{{ samba_firewall_zone }}"
+        source: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: enabled
+      loop: "{{ samba_allowed_networks }}"
+
+    - name: Povolení Samby ve firewallu
+      ansible.posix.firewalld:
+        zone: "{{ samba_firewall_zone }}"
+        service: samba
+        permanent: true
+        immediate: true
+        state: enabled
+
+  handlers:
+    - name: Restart Samby
+      ansible.builtin.systemd_service:
+        name: smb
+        state: restarted

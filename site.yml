@@ -6,3 +6,5 @@
   ansible.builtin.import_playbook: playbooks/cowsay.yml
 - name: Správa uživatele
   ansible.builtin.import_playbook: playbooks/users.yml
+- name: Samba server
+  ansible.builtin.import_playbook: playbooks/samba.yml
